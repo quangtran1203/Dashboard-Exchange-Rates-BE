@@ -1,0 +1,32 @@
+/**
+ * Defines collection and model types that will be fed to the DB.
+ */
+
+import mongoose from "mongoose";
+
+const RatesSchema = new mongoose.Schema({
+    date: {
+        type: String,
+        required: true,
+    },
+    CAD: String,
+    USD: String,
+    EUR: String,
+});
+
+const ExchangeRateSchema = new mongoose.Schema({
+    baseCurrency: {
+        type: String,
+        required: true,
+    },
+    rates: {
+        type: [RatesSchema],
+        required: true,
+    },
+    lastUpdateOn: {
+        type: Date,
+        required: true,
+    },
+});
+
+export default mongoose.model("exchangeRates", ExchangeRateSchema);
