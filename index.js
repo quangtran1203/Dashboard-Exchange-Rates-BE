@@ -5,11 +5,14 @@
 
 import express from "express";
 import mongoose from "mongoose";
+import cors from 'cors';
+import router from "./routes.js";
 import "express-async-errors";
 
 // setting up express server
 const app = express();
 app.disable("x-powered-by"); //Reduce fingerprinting
+app.use(cors());
 app.use(express.json());
 
 // configure and connect to MongoDB database
@@ -23,9 +26,7 @@ mongoose
     .catch((err) => console.log(err));
 
 // api routes
-app.get("/api", (req, res) => {
-    res.send("success");
-});
+app.use("/api", router);
 
 // extra error handling layer from express-async-errors --> catch any client or server errors
 app.use((err, req, res, next) => {

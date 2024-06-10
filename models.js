@@ -9,9 +9,9 @@ const RatesSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    CAD: String,
-    USD: String,
-    EUR: String,
+    CAD: Number,
+    USD: Number,
+    EUR: Number,
 });
 
 const ExchangeRateSchema = new mongoose.Schema({
@@ -24,7 +24,7 @@ const ExchangeRateSchema = new mongoose.Schema({
         required: true,
     },
     lastUpdateOn: {
-        type: Date,
+        type: String,
         required: true,
     },
 });

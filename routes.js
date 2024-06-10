@@ -1,28 +1,15 @@
 /**
  * Sets up API endpoints
- * - POST: fe sends updated data --> add to db
- * - GET: fe wants the latest exchange rate --> send back the latest rate
  */
 
 import express from "express";
-import {
-    catchValidateErrors,
-    validateBaseCurrencyBody,
-    validateDateBody,
-    validateRatesBody,
-} from "./middlewares";
-import { receiveExchangeData } from "./controllers";
+import { validateReqBody } from "./middlewares.js";
+import { receiveExchangeData, getLatestExchangeData } from "./controllers.js";
 
 const router = express.Router();
 
-router.post(
-    "/exchange-rate-data",
-    validateBaseCurrencyBody,
-    validateRatesBody,
-    validateDateBody,
-    catchValidateErrors,
-    receiveExchangeData
-);
+router.post("/exchange-rate-data", validateReqBody, receiveExchangeData);
 
+router.get("/exchange-rate-data", getLatestExchangeData);
 
 export default router;
