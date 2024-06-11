@@ -6,8 +6,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors';
+import cron from 'node-cron';
 import router from "./routes.js";
 import "express-async-errors";
+import { fetchDataAndCompare } from "./utils.js";
 
 // setting up express server
 const app = express();
@@ -27,6 +29,19 @@ mongoose
 
 // api routes
 app.use("/api", router);
+
+
+/**
+ * cron job to run on the first day of each month to collect new data and compare against the data available in DB.
+ * 
+ * Ideally, this only acts as back-up to ensure that the DB always has the latest exchange rate data in case
+ * no user interacts with the front-end to trigger DB seeding.
+ */
+cron.schedule("0 0 1 * *", async () => {
+    const status = await fetchDataAndCompare();
+    console.log(status);
+});
+
 
 // extra error handling layer from express-async-errors --> catch any client or server errors
 app.use((err, req, res, next) => {
